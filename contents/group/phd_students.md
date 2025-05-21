@@ -2,16 +2,10 @@
   image: "static/assets/img/students/juzhanxu.jpg"
   research: "Computer Graphics; Robotics"
   started: "2022"
-  link: "https://github.com/Juzhan"
+  link: ""
 
 - name: "Xiangyu Su"
   image: "static/assets/img/students/xiangyusu.jpg"
   research: "Computer Graphics"
   started: "2023"
-  link: ""
-
-- name: "Juntao Jian"
-  image: "static/assets/img/students/juntaojian.jpg"
-  research: "Computer Graphics; Robotics"
-  started: "2024"
   link: ""
