@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Services</title>
+  <link rel="stylesheet" href="static/css/style.css">
+  <style>
+    /* 服务页面特定样式 */
+    .paragraph {
+      margin-bottom: 40px;
+    }
+
+    .paragraph strong {
+      display: block;
+      font-size: 22px;
+      color: var(--primary-color);
+      margin-bottom: 15px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 5px;
+    }
+
+    .paragraph ul {
+      list-style-type: none;
+      padding-left: 20px;
+    }
+
+    .paragraph li {
+      margin-bottom: 8px;
+      position: relative;
+      padding-left: 15px;
+    }
+
+    .paragraph li:before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--primary-color);
+    }
+
+    .paragraph li a {
+      font-weight: normal;
+    }
+  </style>
+</head>
+<body class="wsite-theme-light">
+  <div id="wrapper">
+    <div id="header">
+      <div id="headerleft">
+        <span class="wsite-logo">
+          <table style="height:60px">
+            <tbody>
+              <tr>
+                <td>
+                  <a href="index.html">
+                    <span id="wsite-title">Academic Website</span>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </span>
+      </div>
+      <div id="navigation">
+        <ul>
+          <li id="pg_home"><a href="index.html">Home</a></li>
+          <li id="pg_group"><a href="group.html">Group</a></li>
+          <li id="pg_pub"><a href="publications.html">Publications</a></li>
+          <li id="active"><a href="services.html">Services</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="content">
+      <div id="wsite-content" class="wsite-not-footer">
+        <!-- 编辑委员会 -->
+        <div id="editorial-board-section" class="paragraph">
+          <!-- 内容将通过JavaScript加载 -->
+        </div>
+
+        <!-- 程序委员会和审稿 -->
+        <div id="committees-section" class="paragraph">
+          <!-- 内容将通过JavaScript加载 -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="static/js/config-parser.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async function() {
+      // 加载配置
+      const config = await window.configUtils.loadConfig();
+
+      // 加载编辑委员会内容
+      const editorialBoardSection = document.getElementById('editorial-board-section');
+      if (editorialBoardSection) {
+        const editorialMarkdown = await window.configUtils.loadMarkdownContent('contents/services/editorial_board.md');
+        editorialBoardSection.innerHTML = window.configUtils.parseMarkdown(editorialMarkdown);
+      }
+
+      // 加载委员会和审稿内容
+      const committeesSection = document.getElementById('committees-section');
+      if (committeesSection) {
+        const committeesMarkdown = await window.configUtils.loadMarkdownContent('contents/services/committees.md');
+        committeesSection.innerHTML = window.configUtils.parseMarkdown(committeesMarkdown);
+      }
+    });
+  </script>
+</body>
+</html>

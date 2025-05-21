@@ -1,0 +1,37 @@
+# 网站基本配置
+site_title: "Ruizhen Hu's Homepage"
+site_language: "en"
+site_author: "Ruizhen Hu"
+site_email: "ruizhen DoT hu [at] gmail DoT com"
+
+# 自定义颜色配置
+color_primary: "#7c72b6"
+color_secondary: "#f6f6f6"
+color_text: "#4c4b54"
+color_link: "#7c72b6"
+color_link_hover: "#bcb2e4"
+color_border: "#c8c8d0"
+
+# 导航菜单配置
+nav1_title: "HOME"
+nav1_url: "index.html"
+nav1_id: "home"
+
+nav2_title: "GROUP"
+nav2_url: "group.html"
+nav2_id: "group"
+
+nav3_title: "PUBLICATIONS"
+nav3_url: "publications.html"
+nav3_id: "publications"
+
+nav4_title: "SERVICES"
+nav4_url: "services.html"
+nav4_id: "services"
+
+# 头像图片配置
+profile_image: "static/assets/img/profile.jpg"
+
+# SEO相关
+meta_description: "Personal academic website template"
+meta_keywords: "academic, research, computer science, graphics"

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Research Group</title>
+  <link rel="stylesheet" href="static/css/style.css">
+  <style>
+    /* 团队页面特定样式 */
+    .title {
+      margin: 30px 0 20px;
+      font-size: 24px;
+      color: var(--primary-color);
+      font-weight: bold;
+    }
+
+    #person_table_PhD,
+    #person_table_Master {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 -15px;
+    }
+
+    .member_card {
+      flex: 0 0 33.33%;
+      padding: 0 15px;
+      margin-bottom: 30px;
+    }
+
+    .member_card img {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1/1;
+      object-fit: cover;
+      border: 1px solid var(--border-color);
+    }
+
+    .alumni-section {
+      margin-top: 40px;
+    }
+
+    .alumni-section h3 {
+      margin: 20px 0 10px;
+      color: var(--primary-color);
+    }
+
+    #person_table_Alumni_Phd,
+    #person_table_Alumni_Master {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 20px;
+    }
+
+    .ali_tr {
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 768px) {
+      .member_card {
+        flex: 0 0 50%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .member_card {
+        flex: 0 0 100%;
+      }
+    }
+  </style>
+</head>
+<body class="wsite-theme-light">
+  <div id="wrapper">
+    <div id="header">
+      <div id="headerleft">
+        <span class="wsite-logo">
+          <table style="height:60px">
+            <tbody>
+              <tr>
+                <td>
+                  <a href="index.html">
+                    <span id="wsite-title">Academic Website</span>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </span>
+      </div>
+      <div id="navigation">
+        <ul>
+          <li id="pg_home"><a href="index.html">Home</a></li>
+          <li id="active"><a href="group.html">Group</a></li>
+          <li id="pg_pub"><a href="publications.html">Publications</a></li>
+          <li id="pg_link"><a href="services.html">Services</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="content">
+      <div id="wsite-content" class="wsite-not-footer">
+        <!-- PhD Students Section -->
+        <div id="PhD">
+          <p class="title">Ph.D. Students</p>
+          <div id="person_table_PhD"></div>
+        </div>
+
+        <!-- Master Students Section -->
+        <div id="Master">
+          <p class="title">Master Students</p>
+          <div id="person_table_Master"></div>
+        </div>
+
+        <!-- Alumni Section -->
+        <div id="Alumni" class="alumni-section">
+          <p class="title">Alumni</p>
+
+          <div id="Phd" class="alumni-subsection">
+            <h3>Ph.D. Students</h3>
+            <table id="person_table_Alumni_Phd"></table>
+          </div>
+
+          <div id="Master" class="alumni-subsection">
+            <h3>Master Students</h3>
+            <table id="person_table_Alumni_Master"></table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="static/js/config-parser.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async function() {
+      // 加载配置
+      const config = await window.configUtils.loadConfig();
+
+      // 加载博士生数据
+      const phdStudentsContainer = document.getElementById('person_table_PhD');
+      if (phdStudentsContainer) {
+        const phdMarkdown = await window.configUtils.loadMarkdownContent('contents/group/phd_students.md');
+        const phdStudents = window.configUtils.parseYamlList(phdMarkdown);
+
+        // 生成博士生卡片
+        phdStudents.forEach(student => {
+          const card = document.createElement('div');
+          card.className = 'member_card';
+
+          let cardHtml = '';
+          if (student.link) {
+            cardHtml += `<a href="${student.link}" target="_blank">`;
+          }
+
+          cardHtml += `
+            <img src="${student.image}" alt="${student.name}">
+            <div class="card_name">${student.name}</div>
+            <div class="card_research_direction">${student.research}</div>
+            <div class="card_info">PhD started in ${student.started}</div>
+          `;
+
+          if (student.link) {
+            cardHtml += '</a>';
+          }
+
+          card.innerHTML = cardHtml;
+          phdStudentsContainer.appendChild(card);
+        });
+      }
+
+      // 加载硕士生数据
+      const masterStudentsContainer = document.getElementById('person_table_Master');
+      if (masterStudentsContainer) {
+        const masterMarkdown = await window.configUtils.loadMarkdownContent('contents/group/master_students.md');
+        const masterStudents = window.configUtils.parseYamlList(masterMarkdown);
+
+        // 生成硕士生卡片
+        masterStudents.forEach(student => {
+          const card = document.createElement('div');
+          card.className = 'member_card';
+
+          let cardHtml = '';
+          if (student.link) {
+            cardHtml += `<a href="${student.link}" target="_blank">`;
+          }
+
+          cardHtml += `
+            <img src="${student.image}" alt="${student.name}">
+            <div class="card_name">${student.name}</div>
+            <div class="card_research_direction">${student.research}</div>
+            <div class="card_info">Started in ${student.started}</div>
+          `;
+
+          if (student.link) {
+            cardHtml += '</a>';
+          }
+
+          card.innerHTML = cardHtml;
+          masterStudentsContainer.appendChild(card);
+        });
+      }
+
+      // 加载校友数据
+      const alumniMarkdown = await window.configUtils.loadMarkdownContent('contents/group/alumni.md');
+
+      // 解析校友数据
+      let currentSection = '';
+      let currentList = [];
+      const sections = {};
+
+      const lines = alumniMarkdown.split('\n');
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+
+        if (line.startsWith('## ')) {
+          // 新的部分开始
+          currentSection = line.substring(3).trim();
+          currentList = [];
+          sections[currentSection] = currentList;
+        } else if (line.startsWith('- name:')) {
+          // 新校友项目
+          const name = line.substring(7).trim();
+          let period = '';
+          let position = '';
+
+          // 读取接下来的两行获取period和position
+          if (i + 1 < lines.length && lines[i + 1].trim().startsWith('- period:')) {
+            period = lines[i + 1].trim().substring(9).trim();
+            i++;
+          }
+
+          if (i + 1 < lines.length && lines[i + 1].trim().startsWith('- position:')) {
+            position = lines[i + 1].trim().substring(11).trim();
+            i++;
+          }
+
+          currentList.push({ name, period, position });
+        }
+      }
+
+      // 填充PhD校友表格
+      const phdAlumniTable = document.getElementById('person_table_Alumni_Phd');
+      if (phdAlumniTable && sections['Ph.D. Students']) {
+        sections['Ph.D. Students'].forEach(alumni => {
+          const row = document.createElement('tr');
+          row.className = 'ali_tr';
+          row.innerHTML = `
+            <td class="member_name" width="100px" style="font-size: 14px; text-align: left; padding: 6px; border-left: 2px solid rgb(102, 102, 204);">${alumni.name}</td>
+            <td class="date" width="100px" style="font-size: 14px;">${alumni.period}</td>
+            <td class="career" style="font-size: 14px;">${alumni.position}</td>
+          `;
+          phdAlumniTable.appendChild(row);
+        });
+      }
+
+      // 填充Master校友表格
+      const masterAlumniTable = document.getElementById('person_table_Alumni_Master');
+      if (masterAlumniTable && sections['Master Students']) {
+        sections['Master Students'].forEach(alumni => {
+          const row = document.createElement('tr');
+          row.className = 'ali_tr';
+          row.innerHTML = `
+            <td class="member_name" width="100px" style="font-size: 14px; text-align: left; padding: 6px; border-left: 2px solid rgb(102, 102, 204);">${alumni.name}</td>
+            <td class="date" width="100px" style="font-size: 14px;">${alumni.period}</td>
+            <td class="career" style="font-size: 14px;">${alumni.position}</td>
+          `;
+          masterAlumniTable.appendChild(row);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

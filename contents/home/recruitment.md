@@ -1,0 +1,1 @@
+I am looking for talented students with a strong background in one or more of the following fields: Computer Graphics, 3D Vision, and Robotics, and we have opening positions of Associate Researcher, PosDoc, PhD, Msc and visiting students. Please drop me an email with your resume if you are interested in working with me.

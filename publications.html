@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Publications</title>
+  <link rel="stylesheet" href="static/css/style.css">
+  <style>
+    /* 出版物页面特定样式 */
+    #publications-container {
+      padding: 10px 20px;
+    }
+
+    .publication-year {
+      font-size: 28px;
+      color: var(--primary-color);
+      margin: 30px 0 15px;
+      font-weight: bold;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 5px;
+    }
+
+    .publication-item {
+      margin-bottom: 30px;
+      padding-left: 20px;
+    }
+
+    .publication-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .publication-authors {
+      margin-bottom: 5px;
+    }
+
+    .publication-venue {
+      font-style: italic;
+      margin-bottom: 5px;
+    }
+
+    .publication-links {
+      margin-top: 8px;
+    }
+
+    .publication-links a {
+      display: inline-block;
+      margin-right: 10px;
+      text-decoration: none;
+    }
+
+    /* 使自己的名字加粗 */
+    .self-name {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body class="wsite-theme-light">
+  <div id="wrapper">
+    <div id="header">
+      <div id="headerleft">
+        <span class="wsite-logo">
+          <table style="height:60px">
+            <tbody>
+              <tr>
+                <td>
+                  <a href="index.html">
+                    <span id="wsite-title">Academic Website</span>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </span>
+      </div>
+      <div id="navigation">
+        <ul>
+          <li id="pg_home"><a href="index.html">Home</a></li>
+          <li id="pg_group"><a href="group.html">Group</a></li>
+          <li id="active"><a href="publications.html">Publications</a></li>
+          <li id="pg_link"><a href="services.html">Services</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="content">
+      <div id="wsite-content" class="wsite-not-footer">
+        <div id="publications-container"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="static/js/config-parser.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async function() {
+      // 加载配置
+      const config = await window.configUtils.loadConfig();
+
+      // 加载出版物数据
+      const publicationsContainer = document.getElementById('publications-container');
+      if (publicationsContainer) {
+        const pubMarkdown = await window.configUtils.loadMarkdownContent('contents/publications/publications.md');
+
+        // 解析出版物数据
+        const lines = pubMarkdown.split('\n');
+        let currentYear = null;
+        let yearDiv = null;
+        let currentPub = null;
+        let inPublication = false;
+
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i].trim();
+
+          if (line.startsWith('## ')) {
+            // 新的年份
+            currentYear = line.substring(3).trim();
+            yearDiv = document.createElement('div');
+            yearDiv.className = 'publication-year-section';
+
+            const yearHeading = document.createElement('h2');
+            yearHeading.className = 'publication-year';
+            yearHeading.textContent = currentYear;
+            yearDiv.appendChild(yearHeading);
+
+            publicationsContainer.appendChild(yearDiv);
+            inPublication = false;
+          } else if (line.startsWith('### ')) {
+            // 新的出版物标题
+            if (inPublication) {
+              // 如果已经在处理一个出版物，完成它
+              yearDiv.appendChild(currentPub);
+            }
+
+            currentPub = document.createElement('div');
+            currentPub.className = 'publication-item';
+
+            const titleElem = document.createElement('div');
+            titleElem.className = 'publication-title';
+            titleElem.textContent = line.substring(4).trim();
+            currentPub.appendChild(titleElem);
+
+            inPublication = true;
+          } else if (inPublication) {
+            // 在现有出版物中添加更多内容
+            if (line === '') continue;
+
+            if (line.includes('**Ruizhen Hu**')) {
+              // 作者行
+              const authorsElem = document.createElement('div');
+              authorsElem.className = 'publication-authors';
+
+              // 使用HTML格式化作者，突出自己的名字
+              let authorsHtml = line.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+              authorsHtml = authorsHtml.replace('**Ruizhen Hu**', '<span class="self-name">Ruizhen Hu</span>');
+
+              authorsElem.innerHTML = authorsHtml;
+              currentPub.appendChild(authorsElem);
+            } else if (line.startsWith('_**') && line.includes('**_')) {
+              // 期刊/会议行
+              const venueElem = document.createElement('div');
+              venueElem.className = 'publication-venue';
+
+              // 提取会议/期刊名称和年份
+              const venueMatch = line.match(/_\*\*([^*]+)\*\*_, \*\*([^*]+)\*\*/);
+              if (venueMatch) {
+                venueElem.innerHTML = `<em>${venueMatch[1]}</em>, ${venueMatch[2]}.`;
+              } else {
+                venueElem.textContent = line;
+              }
+
+              currentPub.appendChild(venueElem);
+            } else if (line.includes('[') && line.includes('](')) {
+              // 链接行
+              const linksElem = document.createElement('div');
+              linksElem.className = 'publication-links';
+
+              // 提取所有链接
+              const linkMatches = [...line.matchAll(/\[([^\]]+)\]\(([^)]+)\)/g)];
+              for (const match of linkMatches) {
+                const linkText = match[1];
+                const linkUrl = match[2];
+
+                const link = document.createElement('a');
+                link.href = linkUrl;
+                link.textContent = linkText;
+                link.target = '_blank';
+
+                linksElem.appendChild(link);
+                linksElem.appendChild(document.createTextNode(' '));
+              }
+
+              currentPub.appendChild(linksElem);
+            }
+          }
+        }
+
+        // 添加最后一个出版物（如果有）
+        if (inPublication && currentPub) {
+          yearDiv.appendChild(currentPub);
+        }
+      }
+    });
+  </script>
+</body>
+</html>

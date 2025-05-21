@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Academic Personal Website</title>
+  <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body class="wsite-theme-light wsite-page-index">
+  <div id="wrapper">
+    <div id="header">
+      <div id="headerleft">
+        <span class="wsite-logo">
+          <table style="height:60px">
+            <tbody>
+              <tr>
+                <td>
+                  <a href="index.html">
+                    <span id="wsite-title">Academic Website</span>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </span>
+      </div>
+      <div id="navigation">
+        <ul>
+          <li id="active"><a href="index.html">Home</a></li>
+          <li id="pg_group"><a href="group.html">Group</a></li>
+          <li id="pg_pub"><a href="publications.html">Publications</a></li>
+          <li id="pg_link"><a href="services.html">Services</a></li>
+        </ul>
+      </div>
+    </div>
+    <div id="content">
+      <div id="wsite-content" class="wsite-not-footer">
+        <div class="wsite-multicol">
+          <div class="wsite-multicol-table-wrap" style="margin:0 -15px">
+            <table class="wsite-multicol-table">
+              <tbody class="wsite-multicol-tbody">
+                <tr class="wsite-multicol-tr">
+                  <td class="wsite-multicol-col" style="width:40.712742980562%;padding:0 15px">
+                    <div>
+                      <div class="wsite-image wsite-image-border-border-width:0" style="padding-top:0px;padding-bottom:10px;margin-left:20px;margin-right:0;text-align:left">
+                        <img id="profile-image" src="" alt="Profile" width="300" height="385" style="width: 300px; max-width: 100%; height: auto;">
+                      </div>
+                    </div>
+                  </td>
+                  <td class="wsite-multicol-col">
+                    <div id="profile-content" class="profile-content"></div>
+                    <h2 style="text-align:left;">
+                      <font size="3"><b>Email:</b></font>
+                      <font size="2" id="email-display"></font>
+                    </h2>
+                  </td>
+                </tr>
+                <tr class="wsite-multicol-col">
+                  <td colspan="2" class="recruitment">
+                    <font size="2" id="recruitment-content"></font>
+                  </td>
+                </tr>
+                <tr class="wsite-multicol-tr">
+                  <td class="wsite-multicol-col" style="width:100%;padding:0 15px 0 35px" colspan="2">
+                    <div class="awards">
+                      <div id="awards-content"></div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="static/js/config-parser.js"></script>
+  <script>
+    // 页面加载完成后执行
+    document.addEventListener('DOMContentLoaded', async function() {
+      // 加载配置
+      const config = await window.configUtils.loadConfig();
+
+      // 设置电子邮件
+      const emailDisplay = document.getElementById('email-display');
+      if (emailDisplay && config && config.site_email) {
+        emailDisplay.textContent = config.site_email;
+      }
+
+      // 设置个人资料图片
+      const profileImage = document.getElementById('profile-image');
+      if (profileImage && config && config.profile_image) {
+        profileImage.src = config.profile_image;
+      }
+
+      // 加载个人资料内容
+      const profileContent = document.getElementById('profile-content');
+      if (profileContent) {
+        const profileMarkdown = await window.configUtils.loadMarkdownContent('contents/home/profile.md');
+        profileContent.innerHTML = window.configUtils.parseMarkdown(profileMarkdown);
+      }
+
+      // 加载招生信息
+      const recruitmentContent = document.getElementById('recruitment-content');
+      if (recruitmentContent) {
+        const recruitmentMarkdown = await window.configUtils.loadMarkdownContent('contents/home/recruitment.md');
+        recruitmentContent.innerHTML = window.configUtils.parseMarkdown(recruitmentMarkdown);
+      }
+
+      // 加载奖项内容
+      const awardsContent = document.getElementById('awards-content');
+      if (awardsContent) {
+        const awardsMarkdown = await window.configUtils.loadMarkdownContent('contents/home/awards.md');
+        awardsContent.innerHTML = window.configUtils.parseMarkdown(awardsMarkdown);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,295 @@
+/* 重置浏览器默认样式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 全局变量，从config.yml中读取 */
+:root {
+  --primary-color: #7c72b6;
+  --secondary-color: #f6f6f6;
+  --text-color: #4c4b54;
+  --link-color: #7c72b6;
+  --link-hover-color: #bcb2e4;
+  --border-color: #c8c8d0;
+  --content-width: 1200px;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--secondary-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+a {
+  color: var(--link-color);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+a:hover {
+  color: var(--link-hover-color);
+}
+
+ul {
+  list-style-position: inside;
+}
+
+/* 布局容器 */
+#wrapper {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  min-height: 100vh;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 页眉 */
+#header {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+#headerleft {
+  display: flex;
+  align-items: center;
+}
+
+#wsite-title {
+  font-size: 28px;
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+/* 导航菜单 */
+#navigation {
+  display: flex;
+}
+
+#navigation ul {
+  display: flex;
+  list-style: none;
+}
+
+#navigation li {
+  margin-left: 20px;
+  position: relative;
+}
+
+#navigation a {
+  padding: 10px;
+  font-weight: 500;
+}
+
+#navigation #active a {
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+/* 页面内容 */
+#content {
+  padding: 20px;
+  max-width: 100%;
+}
+
+#wsite-content {
+  width: 100%;
+}
+
+/* 首页布局 */
+.wsite-multicol {
+  width: 100%;
+}
+
+.wsite-multicol-table-wrap {
+  margin: 0 -15px;
+}
+
+.wsite-multicol-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.wsite-multicol-col {
+  padding: 0 15px;
+  vertical-align: top;
+}
+
+/* 首页个人资料图片 */
+.wsite-image {
+  margin-bottom: 20px;
+}
+
+.wsite-image img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--border-color);
+}
+
+/* 首页内容样式 */
+h2 {
+  margin-bottom: 15px;
+  color: var(--text-color);
+  font-weight: normal;
+}
+
+.block_title {
+  margin: 30px 0 15px 0;
+  font-size: 24px;
+  color: var(--primary-color);
+}
+
+.title_content {
+  font-weight: bold;
+}
+
+/* 研究生和校友信息的样式 */
+#person_table_PhD,
+#person_table_Master {
+  width: 100%;
+}
+
+.member_card {
+  text-align: center;
+  margin-bottom: 30px;
+  vertical-align: top;
+}
+
+.card_name {
+  font-weight: bold;
+  margin: 10px 0 5px;
+}
+
+.card_research_direction {
+  font-size: 14px;
+  min-height: 25px;
+  margin-bottom: 5px;
+}
+
+.card_info {
+  font-size: 14px;
+  color: #777;
+}
+
+/* 校友表格样式 */
+.member_name {
+  font-size: 14px;
+  text-align: left;
+  padding: 6px;
+  border-left: 2px solid var(--primary-color);
+}
+
+.date, .career {
+  font-size: 14px;
+}
+
+/* 文献页面 */
+.publication_item {
+  margin-bottom: 30px;
+}
+
+.publication_title {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.publication_authors {
+  margin-bottom: 5px;
+}
+
+.publication_venue {
+  font-style: italic;
+  margin-bottom: 5px;
+}
+
+.publication_links a {
+  margin-right: 10px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  #header {
+    flex-direction: column;
+  }
+
+  #navigation {
+    margin-top: 15px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  #navigation ul {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  #navigation li {
+    margin: 5px 10px;
+  }
+
+  .wsite-multicol-table {
+    display: block;
+  }
+
+  .wsite-multicol-tbody,
+  .wsite-multicol-tr,
+  .wsite-multicol-col {
+    display: block;
+    width: 100% !important;
+  }
+
+  #person_table_PhD,
+  #person_table_Master {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .member_card {
+    flex: 0 0 50%;
+  }
+}
+
+@media (max-width: 480px) {
+  .member_card {
+    flex: 0 0 100%;
+  }
+}
+
+/* 招生信息样式 */
+.recruitment {
+  background-color: #f9f9f9;
+  padding: 15px;
+  margin: 20px 0;
+  border-left: 3px solid var(--primary-color);
+}
+
+/* 奖项列表样式 */
+#awards_list {
+  list-style-type: none;
+}
+
+#awards_list .awards_item {
+  margin-bottom: 8px;
+  padding-left: 15px;
+  position: relative;
+}
+
+#awards_list .awards_item:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--primary-color);
+}
+
+/* 分割线 */
+hr {
+  margin: 30px 0;
+  border: none;
+  border-top: 1px solid var(--border-color);
+}
