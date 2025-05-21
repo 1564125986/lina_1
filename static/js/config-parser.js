@@ -6,7 +6,7 @@
 // 加载配置文件并应用到网站
 async function loadConfig() {
   try {
-    const response = await fetch('/contents/config.yml');
+    const response = await fetch('./contents/config.yml');
     const configText = await response.text();
     const config = parseSimpleYAML(configText);
 
